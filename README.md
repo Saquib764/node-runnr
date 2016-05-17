@@ -126,7 +126,7 @@ To remove a job forever -
 ```javascript
 var kill = Jobs.kill('myjob')
 console.log(kill);		// true / false
-	```
+```
 
 ### Start a stopped job
 
