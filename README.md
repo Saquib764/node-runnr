@@ -6,7 +6,7 @@
 ## Usage
 ### Install using bower: 
 ```javascript
-bower install dna-router
+bower install node-runner
 ```
 ### Overview
 'node-runner' can execute an arbitrary task at multiple intervals and time. Unlike cron, input time format are in Human readable form. You can run jobs daily, weekly or monthly at multiple time/date. It exposes few APIs through which all jobs can be reschedules/stopped/start via front-end (You need to make a front-endfor that.)
