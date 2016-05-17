@@ -104,7 +104,8 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 	console.log(monthly); 		// Output -> myjob
 	```
 
-`Note:` Name must be unique for all job.
+	`Note:` Name must be unique for all job.
+
 
 ### Stop/cancel a job
 
