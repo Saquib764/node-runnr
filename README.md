@@ -34,7 +34,9 @@ If its a weekly job, Monday, 12:30:10 every week.
 To execute job at every 5 min, time string would be just `5:0`, and just `5` for every 5 sec and so on.
 
 `node-runner` exposes four functions to create a job. All functions returns the name of job created.
+
 1. 	Creating an Interval job:
+
 	```script
 	var interval = Jobs.addIntervalJob('10:20', function(){...}, 'myjob', details);
 	console.log(interval); 		// Output -> myjob
@@ -46,4 +48,5 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 	var interval = Jobs.addIntervalJob(['5', '10', '20'], function(){...}, 'myjob', details);
 	console.log(interval); 		// Output -> myjob
 	```
+	
 	This will execute job at 5 min, then 10 min after last execyte time, then 20 min after last time and then 5, and so on.
