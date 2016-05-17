@@ -1,0 +1,19 @@
+{
+  "name": "node-runner",
+  "version": "1.0.0",
+  "description": "Execute set of predefined tasks at a given time/times and at certain interval/s.",
+  "main": "node-runner.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "scheduler",
+    "task",
+    "node",
+    "interval",
+    "cron",
+    "node-cron"
+  ],
+  "author": "Saquib Alam",
+  "license": "ISC"
+}
