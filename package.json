@@ -15,5 +15,13 @@
     "node-cron"
   ],
   "author": "Saquib Alam",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saquib764/node-runner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Saquib764/node-runner/issues"
+  },
+  "homepage": "https://github.com/Saquib764/node-runner#readme"
 }
