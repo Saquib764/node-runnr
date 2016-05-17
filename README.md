@@ -107,12 +107,13 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 	`Note:` Name must be unique for all job.
 
 
-### Stop/cancel a job
+### Stop/cancel a job:
 
 	```javascript
 	var stopped = Jobs.stop('myjob')
 	console.log(stopped);		// true or false
 	```
+	
 	To stop all running jobs.
 	
 	```javascript
@@ -129,6 +130,7 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 
 ### Start a stopped job
 
+
 	```javascript
 	var start = Jobs.start('myjob')
 	console.log(start);		// true or false
@@ -143,12 +145,14 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 	
 ### Rescheduele a job
 
+
 	```javascript
 	var job = Jobs.reschedule(interval, '20:10');
 	console.log(job);		// myjob. (interval = 'myjob')
 	```
 
 ### Get job
+
 
 	```javascript
 	var job = Jobs.get(daily);
