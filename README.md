@@ -6,7 +6,7 @@
 ## Usage
 ### Install using npm: 
 ```javascript
-npm install node-runner
+npm install node-runners	// Notice 's' in the last
 ```
 ### Overview
 'node-runner' can execute an arbitrary task at multiple intervals and time. Unlike cron, input time format are in Human readable form. You can run jobs daily, weekly or monthly at multiple time/date. It exposes few APIs through which all jobs can be reschedules/stopped/start via front-end (You need to make a front-endfor that.)
