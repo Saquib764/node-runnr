@@ -233,6 +233,7 @@ module.exports = function(delay){
 		jobs.forEach(function(job){
 			job.pause = true;
 		})
+		return true;
 	}
 	this.stop = function(name){
 		var job = this._get(name);
@@ -245,6 +246,7 @@ module.exports = function(delay){
 		jobs.forEach(function(job){
 			job.pause = false;
 		})
+		return true;
 	}
 	this.start = function(name){
 		var job = this._get(name);
