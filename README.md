@@ -17,7 +17,7 @@ It have just one clock to monitor all jobs thus no need to re-evaluate jobs at e
 
 Require `node-runner`.
 ```javascript
-var Runner = require('node-runner');
+var Runner = require('node-runners');
 var Jobs = new Runner();
 ```
 For custom job cycle.

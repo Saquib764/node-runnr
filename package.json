@@ -1,5 +1,5 @@
 {
-  "name": "node-runner",
+  "name": "node-runners",
   "version": "1.0.0",
   "description": "Execute set of predefined tasks at a given time/times and at certain interval/s.",
   "main": "node-runner.js",
@@ -15,7 +15,7 @@
     "node-cron"
   ],
   "author": "Saquib Alam",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Saquib764/node-runner.git"
