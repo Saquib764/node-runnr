@@ -109,64 +109,61 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 
 ### Stop/cancel a job:
 
-	```javascript
-	var stopped = Jobs.stop('myjob')
-	console.log(stopped);		// true or false
-	```
-	
-	To stop all running jobs.
-	
-	```javascript
-	var stopped = Jobs.stopAll()
-	console.log(stopped);		// true
-	```
+```javascript
+var stopped = Jobs.stop('myjob')
+console.log(stopped);		// true or false
+```
 
-	To remove a job forever -
+To stop all running jobs.
 
-	```javascript
-	var kill = Jobs.kill('myjob')
-	console.log(kill);		// true / false
+```javascript
+var stopped = Jobs.stopAll()
+console.log(stopped);		// true
+```
+
+To remove a job forever -
+
+```javascript
+var kill = Jobs.kill('myjob')
+console.log(kill);		// true / false
 	```
 
 ### Start a stopped job
 
+```javascript
+var start = Jobs.start('myjob')
+console.log(start);		// true or false
+```
 
-	```javascript
-	var start = Jobs.start('myjob')
-	console.log(start);		// true or false
-	```
-	
-	To stop all running jobs.
+To stop all running jobs.
 
-	```javascript
-	var start = Jobs.startAll()
-	console.log(start);		// true
-	```
+```javascript
+var start = Jobs.startAll()
+console.log(start);		// true
+```
 	
 ### Rescheduele a job
 
-
-	```javascript
-	var job = Jobs.reschedule(interval, '20:10');
-	console.log(job);		// myjob. (interval = 'myjob')
-	```
+```javascript
+var job = Jobs.reschedule(interval, '20:10');
+console.log(job);		// myjob. (interval = 'myjob')
+```
 
 ### Get job
 
-
-	```javascript
-	var job = Jobs.get(daily);
-	console.log(job);
-	/* Output
-	{
-		name: 'myjob',
-		last: Number,	// Last run timestamp
-		next: Number,	// Next scheduled run timestamp
-		pause: Boolean,	// Stopped or running
-		type: 'daily',
-		_schedule: String,	// entered time/interval string
-		schedule: Array,	// Evaluated timestamp or interval in ms
-		details: Object,	// Whatever object was entered during job creation
-	}
-	*/
-	```
+```javascript
+var job = Jobs.get(daily);
+console.log(job);
+/* Output
+{
+	name: 'myjob',
+	last: Number,	// Last run timestamp
+	next: Number,	// Next scheduled run timestamp
+	pause: Boolean,	// Stopped or running
+	type: 'daily',
+	_schedule: String,	// entered time/interval string
+	schedule: Array,	// Evaluated timestamp or interval in ms
+	details: Object,	// Whatever object was entered during job creation
+}
+*/
+```
