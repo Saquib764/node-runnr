@@ -26,9 +26,13 @@ var Jobs = new Runner(200);
 ```
 
 Time format looks as follow:
+
 `Day:Hour:Min:Sec`
+
 For example, '2: 12:30: 10' would run a job at every 2 days, 12 hour, 30 min and 10 seconds if its an interval job.
+
 If its a monthly job, it will execute job on 2nd of every month at 12:30:10.
+
 If its a weekly job, Monday, 12:30:10 every week. 
 
 To execute job at every 5 min, time string would be just `5:0`, and just `5` for every 5 sec and so on.
@@ -48,5 +52,5 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 	var interval = Jobs.addIntervalJob(['5', '10', '20'], function(){...}, 'myjob', details);
 	console.log(interval); 		// Output -> myjob
 	```
-	
+
 	This will execute job at 5 min, then 10 min after last execyte time, then 20 min after last time and then 5, and so on.
