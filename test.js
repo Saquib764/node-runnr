@@ -1,4 +1,4 @@
-var Runner = require('./node-runner');
+var Runner = require('./node-runners');
 
 var S = new Runner();
 // S.initJob(f)
