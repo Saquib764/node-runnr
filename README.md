@@ -1,28 +1,29 @@
-# node-runner
+# node-runnr
 
-`node-runner` is easy to use task master. Execute set of predefined tasks at a given time/times and at certain interval/s.
+`node-runnr` is easy to use task master. Execute set of predefined tasks at a given time/times and at certain interval/s.
 
+`NOTE:` Its not working now. It will by tommorrow.
 
 ## Usage
 ### Install using npm: 
 ```javascript
-npm install node-runners	// Notice 's' in the last
+npm install node-runnr
 ```
 ### Overview
-'node-runner' can execute an arbitrary task at multiple intervals and time. Unlike cron, input time format are in Human readable form. You can run jobs daily, weekly or monthly at multiple time/date. It exposes few APIs through which all jobs can be reschedules/stopped/start via front-end (You need to make a front-endfor that.)
+'node-runnr' can execute an arbitrary task at multiple intervals and time. Unlike cron, input time format are in Human readable form. You can run jobs daily, weekly or monthly at multiple time/date. It exposes few APIs through which all jobs can be reschedules/stopped/start via front-end (You need to make a front-endfor that.)
 
-It have just one clock to monitor all jobs thus no need to re-evaluate jobs at every cycle, hence, its very lightweight. By default, clock cycle is 100ms i.e check and ecxecute task at every 100ms. However, custom cycle can be passed while creating a `runner` object. 
+It have just one clock to monitor all jobs thus no need to re-evaluate jobs at every cycle, hence, its very lightweight. By default, clock cycle is 100ms i.e check and ecxecute task at every 100ms. However, custom cycle can be passed while creating a `runnr` object. 
 
 ### Jobs and scheduling
 
-Require `node-runner`.
+Require `node-runnr`.
 ```javascript
-var Runner = require('node-runners');
-var Jobs = new Runner();
+var Runnr = require('node-runnr');
+var Jobs = new Runnr();
 ```
 For custom job cycle.
 ```javascript
-var Jobs = new Runner(200);
+var Jobs = new Runnr(200);
 ```
 
 Time format looks as follow:
@@ -39,7 +40,7 @@ If its a weekly job, Monday, 12:30:10 every week.
 To execute job at every 5 min, time string would be just `5:0`, and just `5` for every 5 sec and so on.
 
 ### Creating Jobs.
-`node-runner` exposes four functions to create a job. All functions returns the name of job created.
+`node-runnr` exposes four functions to create a job. All functions returns the name of job created.
 
 1. 	Creating an Interval job:
 
