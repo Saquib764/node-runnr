@@ -1,8 +1,8 @@
 {
-  "name": "node-runners",
-  "version": "1.1.1",
+  "name": "node-runnr",
+  "version": "1.0.0",
   "description": "Execute set of predefined tasks at a given time/times and at certain interval/s.",
-  "main": "node-runners.js",
+  "main": "node-runnr.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,10 +18,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Saquib764/node-runner.git"
+    "url": "git+https://github.com/Saquib764/node-runnr.git"
   },
   "bugs": {
-    "url": "https://github.com/Saquib764/node-runner/issues"
+    "url": "https://github.com/Saquib764/node-runnr/issues"
   },
-  "homepage": "https://github.com/Saquib764/node-runner#readme"
+  "homepage": "https://github.com/Saquib764/node-runnr#readme"
 }
