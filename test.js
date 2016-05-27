@@ -1,6 +1,6 @@
-var Runner = require('./node-runners');
+var Runnr = require('./node-runnr');
 
-var S = new Runner();
+var S = new Runnr();
 // S.initJob(f)
 // var ii = S.addIntervalJob(['1'], function(){console.log('daily')});
 var ii = S.addIntervalJob(['1'], function(){
