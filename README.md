@@ -2,7 +2,6 @@
 
 `node-runnr` is easy to use task master. Execute set of predefined tasks at a given time/times and at certain interval/s.
 
-`NOTE:` Its not working now. It will by tommorrow.
 
 ## Usage
 ### Install using npm: 
