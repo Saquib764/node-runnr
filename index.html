@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Node-runnr by Saquib764</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Node-runnr</h1>
+          <h2>Execute set of predefined tasks at a given time/times and at certain interval/s</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/Saquib764/node-runnr/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/Saquib764/node-runnr/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/Saquib764/node-runnr" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="node-runnr" class="anchor" href="#node-runnr" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>node-runnr</h1>
+
+<p><code>node-runnr</code> is easy to use task master. Execute set of predefined tasks at a given time/times and at certain interval/s.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="install-using-npm" class="anchor" href="#install-using-npm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install using npm:</h3>
+
+<div class="highlight highlight-source-js"><pre>npm install node<span class="pl-k">-</span>runnr</pre></div>
+
+<h3>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h3>
+
+<p>'node-runnr' can execute an arbitrary task at multiple intervals and time. Unlike cron, input time format are in Human readable form. You can run jobs daily, weekly or monthly at multiple time/date. It exposes few APIs through which all jobs can be reschedules/stopped/start via front-end (You need to make a front-endfor that.)</p>
+
+<p>It have just one clock to monitor all jobs thus no need to re-evaluate jobs at every cycle, hence, its very lightweight. By default, clock cycle is 100ms i.e check and ecxecute task at every 100ms. However, custom cycle can be passed while creating a <code>runnr</code> object. </p>
+
+<h3>
+<a id="jobs-and-scheduling" class="anchor" href="#jobs-and-scheduling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Jobs and scheduling</h3>
+
+<p>Require <code>node-runnr</code>.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Runnr <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>node-runnr<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> Jobs <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Runnr</span>();</pre></div>
+
+<p>For custom job cycle.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Jobs <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Runnr</span>(<span class="pl-c1">200</span>);</pre></div>
+
+<p>Time format looks as follow:</p>
+
+<p><code>Day:Hour:Min:Sec</code></p>
+
+<p>For example, '2: 12:30: 10' would run a job at every 2 days, 12 hour, 30 min and 10 seconds if its an interval job.</p>
+
+<p>If its a monthly job, it will execute job on 2nd of every month at 12:30:10.</p>
+
+<p>If its a weekly job, Monday, 12:30:10 every week. </p>
+
+<p>To execute job at every 5 min, time string would be just <code>5:0</code>, and just <code>5</code> for every 5 sec and so on.</p>
+
+<h3>
+<a id="creating-jobs" class="anchor" href="#creating-jobs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating Jobs.</h3>
+
+<p><code>node-runnr</code> exposes four functions to create a job. All functions returns the name of job created.</p>
+
+<ol>
+<li>
+<p>Creating an Interval job:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> interval <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">addIntervalJob</span>(<span class="pl-s"><span class="pl-pds">'</span>10:20<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){<span class="pl-k">...</span>}, <span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>, details);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(interval);      <span class="pl-c">// Output -&gt; myjob</span>
+<span class="pl-c">// typeof 'details' is should be object</span></pre></div>
+
+<p>This will create a job named 'myjob' and execute at every 10 min and 20 seconds. We can set multiple intervals.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> interval <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">addIntervalJob</span>([<span class="pl-s"><span class="pl-pds">'</span>5<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>10<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>20<span class="pl-pds">'</span></span>], <span class="pl-k">function</span>(){<span class="pl-k">...</span>}, <span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>, details);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(interval);      <span class="pl-c">// Output -&gt; myjob</span></pre></div>
+
+<p>This will execute job at 5 min, then 10 min after last execyte time, then 20 min after last time and then 5, and so on.</p>
+</li>
+<li>
+<p>Creating a daily job:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> daily <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">addDailyJob</span>(<span class="pl-s"><span class="pl-pds">'</span>10:20<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){<span class="pl-k">...</span>}, <span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>, details);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(daily);         <span class="pl-c">// Output -&gt; myjob</span></pre></div>
+
+<p>This will create a job at 00:10:20(00hr 10min 20sec). To create a job at 9:25 PM, enter <code>21:25:00</code>.</p>
+
+<p>To execute a job at multiple time, i.e 9AM, 3PM, 10:30PM do as follow.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> daily <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">addDailyJob</span>([<span class="pl-s"><span class="pl-pds">'</span>9:0:0<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>15:0:0<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>22:30:0<span class="pl-pds">'</span></span>], <span class="pl-k">function</span>(){<span class="pl-k">...</span>}, <span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>, details);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(daily);         <span class="pl-c">// Output -&gt; myjob</span></pre></div>
+</li>
+<li>
+<p>Creating a weekly job:
+Day: 1-7, 1-Sunday, 7-Saturday</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> weekly <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">addWeeklyJob</span>(<span class="pl-s"><span class="pl-pds">'</span>2:0:10:20<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){<span class="pl-k">...</span>}, <span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>, details);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(weekly);        <span class="pl-c">// Output -&gt; myjob</span></pre></div>
+
+<p>This will create a job on Monday,  at 00:10:20(00hr 10min 20sec).</p>
+
+<p>To execute a job at multiple days, i.e Sunday 9AM, Tuesday 3PM, Friday 10:30PM do as follow.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> weekly <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">addWeeklyJob</span>([<span class="pl-s"><span class="pl-pds">'</span>1:9:0:0<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>3:15:0:0<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>6:22:30:0<span class="pl-pds">'</span></span>], <span class="pl-k">function</span>(){<span class="pl-k">...</span>}, <span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>, details);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(weekly);        <span class="pl-c">// Output -&gt; myjob</span></pre></div>
+</li>
+<li>
+<p>Creating a monthly job:
+Date: 1-31 (If month have 30 days, 31st job will be done on 1st of coming month)</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> monthly <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">addMonthlyJob</span>(<span class="pl-s"><span class="pl-pds">'</span>2:0:10:20<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){<span class="pl-k">...</span>}, <span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>, details);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(monthly);       <span class="pl-c">// Output -&gt; myjob</span></pre></div>
+
+<p>This will create a job on 2nd, at 00:10:20(00hr 10min 20sec) of every month.</p>
+
+<p>To execute a job at multiple dates, i.e 1st 9AM, 15th 3PM, 25th 10:30PM do as follow.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> monthly <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">addMonthlyJob</span>([<span class="pl-s"><span class="pl-pds">'</span>1:9:0:0<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>15:15:0:0<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>25:22:30:0<span class="pl-pds">'</span></span>], <span class="pl-k">function</span>(){<span class="pl-k">...</span>}, <span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>, details);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(monthly);       <span class="pl-c">// Output -&gt; myjob</span></pre></div>
+
+<p><code>Note:</code> Name must be unique for all job.</p>
+</li>
+</ol>
+
+<h3>
+<a id="stopcancel-a-job" class="anchor" href="#stopcancel-a-job" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Stop/cancel a job:</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> stopped <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-c1">stop</span>(<span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>)
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(stopped);       <span class="pl-c">// true or false</span></pre></div>
+
+<p>To stop all running jobs.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> stopped <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">stopAll</span>()
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(stopped);       <span class="pl-c">// true</span></pre></div>
+
+<p>To remove a job forever -</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> kill <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">kill</span>(<span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>)
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(kill);      <span class="pl-c">// true / false</span></pre></div>
+
+<h3>
+<a id="start-a-stopped-job" class="anchor" href="#start-a-stopped-job" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Start a stopped job</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> start <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-c1">start</span>(<span class="pl-s"><span class="pl-pds">'</span>myjob<span class="pl-pds">'</span></span>)
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(start);     <span class="pl-c">// true or false</span></pre></div>
+
+<p>To stop all running jobs.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> start <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">startAll</span>()
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(start);     <span class="pl-c">// true</span></pre></div>
+
+<h3>
+<a id="rescheduele-a-job" class="anchor" href="#rescheduele-a-job" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rescheduele a job</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> job <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">reschedule</span>(interval, <span class="pl-s"><span class="pl-pds">'</span>20:10<span class="pl-pds">'</span></span>);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(job);       <span class="pl-c">// myjob. (interval = 'myjob')</span></pre></div>
+
+<h3>
+<a id="get-job" class="anchor" href="#get-job" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get job</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> job <span class="pl-k">=</span> <span class="pl-smi">Jobs</span>.<span class="pl-en">get</span>(daily);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(job);
+<span class="pl-c">/* Output</span>
+<span class="pl-c">{</span>
+<span class="pl-c">    name: 'myjob',</span>
+<span class="pl-c">    last: Number,   // Last run timestamp</span>
+<span class="pl-c">    next: Number,   // Next scheduled run timestamp</span>
+<span class="pl-c">    pause: Boolean, // Stopped or running</span>
+<span class="pl-c">    type: 'daily',</span>
+<span class="pl-c">    _schedule: String,  // entered time/interval string</span>
+<span class="pl-c">    schedule: Array,    // Evaluated timestamp or interval in ms</span>
+<span class="pl-c">    details: Object,    // Whatever object was entered during job creation</span>
+<span class="pl-c">}</span>
+<span class="pl-c">*/</span></pre></div>
+        </section>
+
+        <footer>
+          Node-runnr is maintained by <a href="https://github.com/Saquib764">Saquib764</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
