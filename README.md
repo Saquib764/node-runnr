@@ -51,11 +51,11 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 	This will create a job named 'myjob' and execute at every 10 min and 20 seconds. We can set multiple intervals.
 
 	```javascript
-	var interval = Jobs.addIntervalJob(['5', '10', '20'], function(){...}, 'myjob', details);
+	var interval = Jobs.addIntervalJob(['5:0', '10', '20:0'], function(){...}, 'myjob', details);
 	console.log(interval); 		// Output -> myjob
 	```
 
-	This will execute job at 5 min, then 10 min after last execyte time, then 20 min after last time and then 5, and so on.
+	This will execute job at 5 min, then 10 seconds after last execyte time, then 20 min after last time and then 5 min, and so on.
 
 2.	Creating a daily job:
 	
