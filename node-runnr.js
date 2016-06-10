@@ -81,11 +81,15 @@ module.exports = function(delay){
 		return false
 	}
 
-	this.addIntervalJob = function(_interval, task, name, details){
+
+	/*
+	job(exit, next)
+	*/
+	this.interval = function(_interval, name, details){
 		/*	Create an Interval Job
-			parameter: 	task -> function
+			parameter: 	interval -> interval
 						details: Object
-			return: String -> name of job
+			return: Object
 		*/
 		var interval =  this._getInterval(_interval);
 		name = name || this._generateName();
@@ -99,9 +103,29 @@ module.exports = function(delay){
 			next: Date.now() + interval[0],
 			pause: false,
 			details: details || {},
+			callbacks: [],
+			currentCallback: 0,
+			done: null
 		}
 		jobs.push(job);
-		return name;
+		return {
+			name: name,
+			job: function(_job){
+				job.task = _job;
+				return this;
+			},
+			then: function(_cb, _cbname){
+				job.callbacks.push({
+					name: name+': '+_cbname,
+					callback: _cb,
+				});
+				return this;
+			},
+			done: function(_done){
+				job.done = _done;
+				return this;
+			},
+		};
 	}
 	this.addDailyJob = function(_time, task, name, details){
 		/*	Create an Daily Job
