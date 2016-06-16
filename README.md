@@ -83,7 +83,7 @@ var callback = function(data, next, exit){
 ```
 
 ###	Starting timer.
-After declaring all jobs, start timer executing `begin()`
+After declaring all jobs, start timer by executing `begin()`
 ```javascript
 Jobs.begin()
 ```
