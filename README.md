@@ -70,15 +70,15 @@ var interval = Jobs.interval('myjob', '10:20', details)
 
 All `job` and `callback` functions have three parameters.
 `data` 	:	Data object passed from job aur previous sub-job. Its null for job.
-`next`	:	Its a function that envokes next `callback`. If its last callback it automatically invokes `exit`.
+`next`	:	Its a function that envokes next `callback`. If its last callback it automatically invokes `exit`. Pass your data as parameter.
 `exit`	:	It exits job, right away, without calling next callbacks.
 
 ```javascript
 var callback = function(data, next, exit){
 	if(all well)
-		next();
+		next(otherdata);
 	else
-		exit()
+		exit(exitdata)
 }
 ```
 
