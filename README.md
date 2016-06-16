@@ -48,10 +48,15 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 ###	Structure.
 
 Basically, there are four parts for all job declaration.
+
 1.	Setting job name, interval/time/schedule and details if any `[compulsory]`.
+
 2.	Passing a job `[complusory]`.
+
 3.	Sequence of callbacks `[optional]`.
+
 4.	Exit callback. It get executed at the end of job and callbacks `[optional]`.
+
 
 Example,
 
