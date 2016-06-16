@@ -85,29 +85,7 @@ module.exports = function(delay){
 	/*
 	job(exit, next)
 	*/
-	this.interval = function(_interval, name, details){
-		/*	Create an Interval Job
-			parameter: 	interval -> interval
-						details: Object
-			return: Object
-		*/
-		var interval =  this._getInterval(_interval);
-		name = name || this._generateName();
-		var job = {
-			type: 'interval',
-			_interval: _interval,
-			interval: interval,
-			task:task,
-			name: name,
-			nextIndex: 0,
-			next: Date.now() + interval[0],
-			pause: false,
-			details: details || {},
-			callbacks: [],
-			currentCallback: 0,
-			done: null
-		}
-		jobs.push(job);
+	var res = function(name, job){
 		return {
 			name: name,
 			job: function(_job){
@@ -121,13 +99,38 @@ module.exports = function(delay){
 				});
 				return this;
 			},
-			done: function(_done){
-				job.done = _done;
+			exit: function(_exit){
+				job.exit = _exit;
 				return this;
 			},
-		};
+		}
 	}
-	this.addDailyJob = function(_time, task, name, details){
+	this.interval = function(name, _interval, details){
+		/*	Create an Interval Job
+			parameter: 	interval -> interval
+						details: Object
+			return: Object
+		*/
+		var interval =  this._getInterval(_interval);
+		name = name || this._generateName();
+		var job = {
+			type: 'interval',
+			_interval: _interval,
+			interval: interval,
+			task: null,
+			name: name,
+			nextIndex: 0,
+			next: Date.now() + interval[0],
+			pause: false,
+			details: details || {},
+			callbacks: [],
+			currentCallback: 0,
+			exit: null
+		}
+		jobs.push(job);
+		return res(name, job);
+	}
+	this.daily = function(name, _time, details){
 		/*	Create an Daily Job
 			parameter: 	task -> function
 						details: Object
@@ -139,11 +142,14 @@ module.exports = function(delay){
 			type: 'daily',
 			_time: _time,
 			time: time,
-			task:task,
+			task: null,
 			name: name,
 			nextIndex: 0,
 			pause: false,
 			details: details || {},
+			callbacks: [],
+			currentCallback: 0,
+			exit: null
 		}
 		var now = Date.now();
 		var today = Math.floor(now/DAILY)*DAILY;
@@ -156,9 +162,9 @@ module.exports = function(delay){
 			job.next = today +day*DAILY + job.time[job.nextIndex];
 		}
 		jobs.push(job);
-		return name;
+		return res(name, job);
 	}
-	this.addWeeklyJob = function(_time, task, name, details){
+	this.weekly = function(name, _time, details){
 		/*	Create an Weekly Job
 			parameter: 	task -> function
 						details: Object
@@ -170,11 +176,14 @@ module.exports = function(delay){
 			type: 'weekly',
 			_time: _time,
 			time: time,
-			task:task,
+			task: null,
 			name: name,
 			nextIndex: 0,
 			pause: false,
 			details: details || {},
+			callbacks: [],
+			currentCallback: 0,
+			exit: null
 		}
 		var now = Date.now();
 		var weekStart = Math.floor(now/WEEKLY)*WEEKLY + 3*DAILY;
@@ -187,9 +196,9 @@ module.exports = function(delay){
 			job.next = weekStart + week*WEEKLY + job.time[job.nextIndex];
 		}
 		jobs.push(job);
-		return name;
+		return res(name, job);
 	}
-	this.addMonthlyJob = function(_time, task, name, details){
+	this.monthly = function(name, _time, details){
 		/*	Create an Monthly Job
 			parameter: 	task -> function
 						details: Object
@@ -201,11 +210,14 @@ module.exports = function(delay){
 			type: 'monthly',
 			_time: _time,
 			time: time,
-			task: task,
+			task: null,
 			name: name,
 			nextIndex: 0,
 			pause: false,
 			details: details || {},
+			callbacks: [],
+			currentCallback: 0,
+			exit: null
 		}
 		var now = Date.now();
 		var date = new Date(now);
@@ -219,7 +231,7 @@ module.exports = function(delay){
 			job.next = monthStart + month*this._getDays(date)*DAILY + job.time[job.nextIndex];
 		}
 		jobs.push(job);
-		return name;
+		return res(name, job);
 	}
 
 	this.get = function(name){
@@ -293,67 +305,94 @@ module.exports = function(delay){
 		return false
 
 	}
-	this.reschedule = function(name, time){
-		/*	Reschedule a job
-			parameter: 	name -> name of job
-			return: Boolean/String
-		*/
-		var job = this._get(name);
-		if(!job)
-			return false;
-		var task = job.task;
-		this.kill(name)
-		switch(job.type){
-			case 'interval': return this.addIntervalJob(time, job.task, name);
-			case 'daily': return this.addDailyJob(time, job.task, name);
-			case 'weekly': return this.addWeeklyJob(time, job.task, name);
-			case 'monthly': return this.addMonthlyJob(time, job.task, name);
+	// this.reschedule = function(name, time){
+	// 	/*	Reschedule a job
+	// 		parameter: 	name -> name of job
+	// 		return: Boolean/String
+	// 	*/
+	// 	var job = this._get(name);
+	// 	if(!job)
+	// 		return false;
+	// 	var task = job.task;
+	// 	this.kill(name)
+	// 	switch(job.type){
+	// 		case 'interval': return this.addIntervalJob(time, job.task, name);
+	// 		case 'daily': return this.addDailyJob(time, job.task, name);
+	// 		case 'weekly': return this.addWeeklyJob(time, job.task, name);
+	// 		case 'monthly': return this.addMonthlyJob(time, job.task, name);
+	// 	}
+	// }
+
+	this.start = function(){
+		var exit = function(job, data){
+			job.currentCallback = 0;
+			if(job.exit)
+				job.exit(data)
 		}
-	}
-	var Loop = setInterval(function() {
-		var now = Date.now();
-		var today = Math.floor(now/DAILY)*DAILY;
-		var weekStart = Math.floor(now/WEEKLY)*WEEKLY + 3*DAILY;
+		var next = function(job, data){
+			var c = job.currentCallback++;
+			var cb = job.callbacks[c] || false
+			if(cb){
+				cb.callback(data, function(data){
+								exit(job, data)
+							}, function(data){
+								next(job, data)
+							})
+			}else{
+				exit(job, data)
+			}
+		}
+		var Loop = setInterval(function() {
+			var now = Date.now();
+			var today = Math.floor(now/DAILY)*DAILY;
+			var weekStart = Math.floor(now/WEEKLY)*WEEKLY + 3*DAILY;
 
-		var date = new Date(now);
-		var monthStart = now - now%DAILY - (date.getDate()-1)*DAILY;
+			var date = new Date(now);
+			var monthStart = now - now%DAILY - (date.getDate()-1)*DAILY;
 
-		jobs.forEach(function(job){
-			// console.log(date)
-			setTimeout(function(){
-				if(job.pause)
-					return 0;
-				var diff = Math.abs(job.next - now);
-				if(job.next<now){
-					setTimeout(job.task, 0);
-					job.last = job.next;
-					switch(job.type){
-						case 'interval':
-							job.nextIndex++;
-							job.nextIndex %= job.interval.length;
-							job.next = now + job.interval[job.nextIndex];
-						break;
-						case 'daily':
-							job.nextIndex++;
-							var day = Math.floor(job.nextIndex/job.time.length);
-							job.nextIndex %= job.time.length;
-							job.next = today + day*DAILY + job.time[job.nextIndex];
-						break;
-						case 'weekly':
-							job.nextIndex++;
-							var week = Math.floor(job.nextIndex/job.time.length);
-							job.nextIndex %= job.time.length;
-							job.next = weekStart + week*WEEKLY + job.time[job.nextIndex];
-						break;
-						case 'monthly':
-							job.nextIndex++;
-							var month = Math.floor(job.nextIndex/job.time.length);
-							job.nextIndex %= job.time.length;
-							job.next = monthStart + month*self._getDays(date)*DAILY + job.time[job.nextIndex];
-						break;
+			jobs.forEach(function(job){
+				// console.log(date)
+				setTimeout(function(){
+					if(job.pause)
+						return 0;
+					var diff = Math.abs(job.next - now);
+					if(job.next<now){
+						setTimeout(function(){
+							job.task(null, function(data){
+								exit(job, data)
+							}, function(data){
+								next(job, data)
+							})
+						}, 0);
+						job.last = job.next;
+						switch(job.type){
+							case 'interval':
+								job.nextIndex++;
+								job.nextIndex %= job.interval.length;
+								job.next = now + job.interval[job.nextIndex];
+							break;
+							case 'daily':
+								job.nextIndex++;
+								var day = Math.floor(job.nextIndex/job.time.length);
+								job.nextIndex %= job.time.length;
+								job.next = today + day*DAILY + job.time[job.nextIndex];
+							break;
+							case 'weekly':
+								job.nextIndex++;
+								var week = Math.floor(job.nextIndex/job.time.length);
+								job.nextIndex %= job.time.length;
+								job.next = weekStart + week*WEEKLY + job.time[job.nextIndex];
+							break;
+							case 'monthly':
+								job.nextIndex++;
+								var month = Math.floor(job.nextIndex/job.time.length);
+								job.nextIndex %= job.time.length;
+								job.next = monthStart + month*self._getDays(date)*DAILY + job.time[job.nextIndex];
+							break;
+						}
 					}
-				}
-			},0)
-		})
-	}, delay);
+				},0)
+			})
+		}, delay);
+	}
 }

@@ -1,23 +1,24 @@
 var Runnr = require('./node-runnr');
 
-var S = new Runnr();
-// S.initJob(f)
-// var ii = S.addIntervalJob(['1'], function(){console.log('daily')});
-var ii = S.addIntervalJob(['1'], function(){
-	var c = S.get('hey');
-	console.log('hey', c.next-c.last)
-}, 'hey');
+var Run = new Runnr();
 
-// S.addIntervalJob(['1'], function(){
-// 	var c = S.get('hey1');
-// 	console.log('hey1', c.next-c.last)
-// }, 'hey1');
+Run.interval('test', ['5', '1'])
+.job(function(data, exit, next){
+	console.log('i')
+	next('next')
+})
+.then(function(data, exit, next){
+	console.log(1, data);
+	exit('g')
+})
+.then(function(data, exit, next){
+	console.log(2, data);
+	next('g')
+})
+.exit(function(data){
+	console.log('exit')
+})
 
-setTimeout(function(){
-	console.log(S.reschedule('hey1', ['2']))
-// console.log(S.getAll())
-},4000)
-// setTimeout(function(){
-// 	S.startAll(ii)
-// // console.log(S.getAll())
-// },6000)
+
+Run.start()
+

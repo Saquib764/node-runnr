@@ -11,14 +11,7 @@ npm install node-runnr
 ### Overview
 'node-runnr' can execute an arbitrary task at multiple intervals and time. Unlike cron, input time format are in Human readable form. You can run jobs daily, weekly or monthly at multiple time/date. It exposes few APIs through which all jobs can be reschedules/stopped/start via front-end (You need to make a front-endfor that.)
 
-It have a universal timer to monitor all jobs thus no need to re-evaluate jobs at every cycle, hence, its very lightweight. By default, clock cycle is 100ms i.e check and ecxecute task at every 100ms. However, custom cycle can be passed while creating a `runnr` object.
-
-For documentation of v1.0.1, see `REAMMEv1.0.1.md` file.
-
-### Whats new after v1.0.1 ?
-
-2.	Multiple callbacks/sub-jobs added. Results of job or previous sub-job can be passed on to next sub-job
-1.	Simplified declaration of jobs.
+It have just one clock to monitor all jobs thus no need to re-evaluate jobs at every cycle, hence, its very lightweight. By default, clock cycle is 100ms i.e check and ecxecute task at every 100ms. However, custom cycle can be passed while creating a `runnr` object. 
 
 ### Jobs and scheduling
 
@@ -45,57 +38,21 @@ If its a weekly job, Monday, 12:30:10 every week.
 
 To execute job at every 5 min, time string would be just `5:0`, and just `5` for every 5 sec and so on.
 
-###	Structure.
-	Basically, there are four parts for all job declaration.
-	1.	Setting job name, interval/time/schedule and details if any `[compulsory]`.
-	2.	Passing a job `[complusory]`.
-	3.	Sequence of callbacks `[optional]`.
-	4.	Exit callback. It get executed at the end of job and callbacks `[optional]`.
-
-	Example,
-	```javascript
-	var interval = Jobs.interval('myjob', '10:20', details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
-	```
-
-	All `job` and `callback` functions have three parameters.
-	`data` 	:	Data object passed from job aur previous sub-job. Its null for job.
-	`next`	:	Its a function that envokes next `callback`. If its last callback it automatically invokes `exit`.
-	`exit`	:	It exits job, right away, without calling next callbacks.
-
-	```javascript
-	var callback = function(data, next, exit){
-		if(all well)
-			next();
-		else
-			exit()
-	}
-	```
-
-
 ### Creating Jobs.
 `node-runnr` exposes four functions to create a job. All functions returns the name of job created.
 
 1. 	Creating an Interval job:
 
 	```javascript
-	var interval = Jobs.interval('myjob', '10:20', details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
+	var interval = Jobs.addIntervalJob('10:20', function(){...}, 'myjob', details);
+	console.log(interval); 		// Output -> myjob
+	// typeof 'details' is should be object
 	```
 	This will create a job named 'myjob' and execute at every 10 min and 20 seconds. We can set multiple intervals.
 
 	```javascript
-	var interval = Jobs.interval('myjob', ['5:0', '10'], details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
+	var interval = Jobs.addIntervalJob(['5:0', '10', '20:0'], function(){...}, 'myjob', details);
+	console.log(interval); 		// Output -> myjob
 	```
 
 	This will execute job at 5 min, then 10 seconds after last execyte time, then 20 min after last time and then 5 min, and so on.
@@ -103,66 +60,48 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 2.	Creating a daily job:
 	
 	```javascript
-	var daily = Jobs.daily('myjob', '10:20', details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
+	var daily = Jobs.addDailyJob('10:20', function(){...}, 'myjob', details);
+	console.log(daily); 		// Output -> myjob
 	```
 	This will create a job at 00:10:20(00hr 10min 20sec). To create a job at 9:25 PM, enter `21:25:00`.
 
 	To execute a job at multiple time, i.e 9AM, 3PM, 10:30PM do as follow.
 
 	```javascript
-	var daily = Jobs.daily('myjob', ['9:0:0', '15:0:0', '22:30:0'], details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
+	var daily = Jobs.addDailyJob(['9:0:0', '15:0:0', '22:30:0'], function(){...}, 'myjob', details);
+	console.log(daily); 		// Output -> myjob
 	```
 
 3.	Creating a weekly job:
 	Day: 1-7, 1-Sunday, 7-Saturday
 	
 	```javascript
-	var weekly = Jobs.weekly('myjob', '2:0:10:20', details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
+	var weekly = Jobs.addWeeklyJob('2:0:10:20', function(){...}, 'myjob', details);
+	console.log(weekly); 		// Output -> myjob
 	```
 	This will create a job on Monday,  at 00:10:20(00hr 10min 20sec).
 
 	To execute a job at multiple days, i.e Sunday 9AM, Tuesday 3PM, Friday 10:30PM do as follow.
 
 	```javascript
-	var weekly = Jobs.weekly('myjob', ['1:9:0:0', '3:15:0:0', '6:22:30:0'], details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
+	var weekly = Jobs.addWeeklyJob(['1:9:0:0', '3:15:0:0', '6:22:30:0'], function(){...}, 'myjob', details);
+	console.log(weekly); 		// Output -> myjob
 	```
 
 4.	Creating a monthly job:
 	Date: 1-31 (If month have 30 days, 31st job will be done on 1st of coming month)
 	
 	```javascript
-	var monthly = Jobs.monthly('myjob', '2:0:10:20', details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
+	var monthly = Jobs.addMonthlyJob('2:0:10:20', function(){...}, 'myjob', details);
+	console.log(monthly); 		// Output -> myjob
 	```
 	This will create a job on 2nd, at 00:10:20(00hr 10min 20sec) of every month.
 
 	To execute a job at multiple dates, i.e 1st 9AM, 15th 3PM, 25th 10:30PM do as follow.
 
 	```javascript
-	var monthly = Jobs.monthly('myjob', ['1:9:0:0', '15:15:0:0', '25:22:30:0'], details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
+	var monthly = Jobs.addMonthlyJob(['1:9:0:0', '15:15:0:0', '25:22:30:0'], function(){...}, 'myjob', details);
+	console.log(monthly); 		// Output -> myjob
 	```
 
 	`Note:` Name must be unique for all job.
@@ -204,8 +143,6 @@ console.log(start);		// true
 ```
 	
 ### Rescheduele a job
-
-`Warning`: This is not working on current version. Will fix this in comming update.
 
 ```javascript
 var job = Jobs.reschedule(interval, '20:10');
