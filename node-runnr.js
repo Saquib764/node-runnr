@@ -323,7 +323,7 @@ module.exports = function(delay){
 	// 	}
 	// }
 
-	this.start = function(){
+	this.begin = function(){
 		var exit = function(job, data){
 			job.currentCallback = 0;
 			if(job.exit)

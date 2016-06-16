@@ -20,5 +20,5 @@ Run.interval('test', ['5', '1'])
 })
 
 
-Run.start()
+Run.begin()
 

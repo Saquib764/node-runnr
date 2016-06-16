@@ -36,7 +36,7 @@ Time format looks as follow:
 
 `Day:Hour:Min:Sec`
 
-For example, '2: 12:30: 10' would run a job at every 2 days, 12 hour, 30 min and 10 seconds if its an interval job.
+For example, `2: 12:30: 10` would run a job at every 2 days, 12 hour, 30 min and 10 seconds if its an interval job.
 
 If its a monthly job, it will execute job on 2nd of every month at 12:30:10.
 
@@ -81,6 +81,14 @@ var callback = function(data, next, exit){
 		exit()
 }
 ```
+
+###	Starting timer.
+After declaring all jobs, start timer executing `begin()`
+```javascript
+Jobs.begin()
+```
+
+Voila, you have you jobs running.
 
 
 ### Creating Jobs.
@@ -210,7 +218,7 @@ var start = Jobs.startAll()
 console.log(start);		// true
 ```
 	
-### Rescheduele a job
+### Reschedule a job
 
 `Warning`: This is not working on current version. Will fix this in comming update.
 
