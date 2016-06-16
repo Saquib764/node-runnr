@@ -47,35 +47,35 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 
 ###	Structure.
 
-	Basically, there are four parts for all job declaration.
-	1.	Setting job name, interval/time/schedule and details if any `[compulsory]`.
-	2.	Passing a job `[complusory]`.
-	3.	Sequence of callbacks `[optional]`.
-	4.	Exit callback. It get executed at the end of job and callbacks `[optional]`.
+Basically, there are four parts for all job declaration.
+1.	Setting job name, interval/time/schedule and details if any `[compulsory]`.
+2.	Passing a job `[complusory]`.
+3.	Sequence of callbacks `[optional]`.
+4.	Exit callback. It get executed at the end of job and callbacks `[optional]`.
 
-	Example,
+Example,
 
-	```javascript
-	var interval = Jobs.interval('myjob', '10:20', details)
-					.job(job)
-					.then(callback)
-					.then(anotherCallback)
-					.exit(exitCallback)
-	```
+```javascript
+var interval = Jobs.interval('myjob', '10:20', details)
+				.job(job)
+				.then(callback)
+				.then(anotherCallback)
+				.exit(exitCallback)
+```
 
-	All `job` and `callback` functions have three parameters.
-	`data` 	:	Data object passed from job aur previous sub-job. Its null for job.
-	`next`	:	Its a function that envokes next `callback`. If its last callback it automatically invokes `exit`.
-	`exit`	:	It exits job, right away, without calling next callbacks.
+All `job` and `callback` functions have three parameters.
+`data` 	:	Data object passed from job aur previous sub-job. Its null for job.
+`next`	:	Its a function that envokes next `callback`. If its last callback it automatically invokes `exit`.
+`exit`	:	It exits job, right away, without calling next callbacks.
 
-	```javascript
-	var callback = function(data, next, exit){
-		if(all well)
-			next();
-		else
-			exit()
-	}
-	```
+```javascript
+var callback = function(data, next, exit){
+	if(all well)
+		next();
+	else
+		exit()
+}
+```
 
 
 ### Creating Jobs.
