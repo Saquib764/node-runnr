@@ -15,7 +15,7 @@ It have a universal timer to monitor all jobs thus no need to re-evaluate jobs a
 
 For documentation of v1.0.1, see `REAMMEv1.0.1.md` file.
 
-### Whats new after v1.0.1 ?
+### Whats new in[and after] v1.1.0 ?
 
 2.	Multiple callbacks/sub-jobs added. Results of job or previous sub-job can be passed on to next sub-job
 1.	Simplified declaration of jobs.
@@ -53,6 +53,7 @@ To execute job at every 5 min, time string would be just `5:0`, and just `5` for
 	4.	Exit callback. It get executed at the end of job and callbacks `[optional]`.
 
 	Example,
+
 	```javascript
 	var interval = Jobs.interval('myjob', '10:20', details)
 					.job(job)
