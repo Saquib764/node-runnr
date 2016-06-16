@@ -46,6 +46,7 @@ If its a weekly job, Monday, 12:30:10 every week.
 To execute job at every 5 min, time string would be just `5:0`, and just `5` for every 5 sec and so on.
 
 ###	Structure.
+
 	Basically, there are four parts for all job declaration.
 	1.	Setting job name, interval/time/schedule and details if any `[compulsory]`.
 	2.	Passing a job `[complusory]`.
